@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using AdventOfCode2023.Helpers;
@@ -11,9 +10,8 @@ namespace AdventOfCode2023.Day1
 
         public Day1(String input)
         {
-            const Int32 BufferSize = 128;
             using (var fileStream = File.OpenRead(input))
-            using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
+            using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true))
             {
                 String line;
                 while ((line = streamReader.ReadLine()) != null)
@@ -43,26 +41,18 @@ namespace AdventOfCode2023.Day1
         public char[] GetAllDigitsFromString(String input)
         {
             var regex = @"(?=(\d|one|two|three|four|five|six|seven|eight|nine))";
-            
-            List<string> digits = new();
-            foreach (Match match in Regex.Matches(input, regex, RegexOptions.IgnoreCase))
-            {
-                digits.Add(match.Groups[1].ToString());
-            }
 
-            var result = new char[digits.Count];
-            for (int i = 0; i < digits.Count; i++)
+            var matches = Regex.Matches(input, regex, RegexOptions.IgnoreCase);
+            var digits = new char[matches.Count];
+            var count = 0;
+            foreach (Match match in matches)
             {
-                try
-                {
-                    result[i] = Convert.ToChar(Int32.Parse(digits[i]).ToString());
-                }
-                catch
-                {
-                    result[i] = Convert.ToChar(ConvertStringToDigit(digits[i]).ToString());
-                }
+                var matchName = match.Groups[1].ToString();
+                int i;
+                digits[count] = Convert.ToChar(Int32.TryParse(matchName, out i) ? i.ToString() : ConvertStringToDigit(matchName).ToString());
+                count++;
             }
-            return result;
+            return digits;
         }
 
         public int GetCalibrationValue(String line, bool spellingsCount = false)
@@ -71,11 +61,9 @@ namespace AdventOfCode2023.Day1
                 ? GetAllDigitsFromString(line)
                 : string.Concat(line.Where(Char.IsDigit)).ToCharArray();
 
-            var calibrationValue = new StringBuilder();
-            calibrationValue.Append(digits[0]);
-            calibrationValue.Append(digits[^1]);
+            var calibrationValue = digits[0].ToString() + digits[^1];
 
-            return Int32.Parse(calibrationValue.ToString());
+            return Int32.Parse(calibrationValue);
         }
 
         public int Part1()
