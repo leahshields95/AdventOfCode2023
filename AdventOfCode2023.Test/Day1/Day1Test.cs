@@ -15,6 +15,7 @@ public class Tests
         day1 = new Day1(input);
     }
 
+    #region Part1
     [Test]
     public void ShouldReturnFirstAndLastDigit()
     {
@@ -53,4 +54,53 @@ public class Tests
         
         Assert.That(day1.Part1(), Is.EqualTo(54605));
     }
+    #endregion
+
+    #region Part2
+    
+    [Test]
+    public void ShouldReturnWrittenNumberAsDigit()
+    {
+        Assert.That(day1.ConvertStringToDigit("two"), Is.EqualTo(2));
+    }
+    
+    [Test]
+    public void ShouldIgnoreCase()
+    {
+        Assert.That(day1.ConvertStringToDigit("THREE"), Is.EqualTo(3));
+    }
+
+    [Test]
+    public void ShouldCountSpelledOutDigits()
+    {
+        Assert.That(day1.GetCalibrationValue("two1nine", true), Is.EqualTo(29));
+        Assert.That(day1.GetCalibrationValue("eightwothree", true), Is.EqualTo(83));
+        Assert.That(day1.GetCalibrationValue("abcone2threexyz", true), Is.EqualTo(13));
+        Assert.That(day1.GetCalibrationValue("xtwone3four", true), Is.EqualTo(24));
+        Assert.That(day1.GetCalibrationValue("4nineeightseven2", true), Is.EqualTo(42));
+        Assert.That(day1.GetCalibrationValue("zoneight234", true), Is.EqualTo(14));
+        Assert.That(day1.GetCalibrationValue("7pqrstsixteen", true), Is.EqualTo(76));
+    }
+    
+    [Test]
+    public void ShouldCountOverlappingWords()
+    {
+        Assert.That(day1.GetCalibrationValue("dgvshjgfdjgoneight", true), Is.EqualTo(18));
+    }
+    
+    [Test] public void ShouldSumAllValuesIncludingWritten()
+    {
+        var input = Constants.BasePath + "day1_example2.txt";
+        day1 = new Day1(input);
+        Assert.That(day1.Part2(), Is.EqualTo(281));
+    }
+    
+    [Test] public void ShouldSumAllValuesForPuzzleInput()
+    {
+        var input = Constants.BasePath + "day1_actual.txt";
+        day1 = new Day1(input);
+        Assert.That(day1.Part2(), Is.EqualTo(55429));
+    }
+
+    #endregion
 }
