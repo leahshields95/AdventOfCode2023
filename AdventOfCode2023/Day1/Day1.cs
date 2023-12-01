@@ -6,11 +6,10 @@ namespace AdventOfCode2023.Day1
 {
     public class Day1 : Challenge
     {
-        public string Input;
+        private List<string> Data = new();
 
         public Day1(String input)
         {
-            Input = input;
             const Int32 BufferSize = 128;
             using (var fileStream = File.OpenRead(input))
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
@@ -18,14 +17,25 @@ namespace AdventOfCode2023.Day1
                 String line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
-                    Console.WriteLine(line);
+                    Data.Add(line);
                 }
             }
         }
 
+        public int GetCalibrationValue(String line)
+        {
+            char[] digits = string.Concat(line.Where(Char.IsDigit)).ToCharArray();
+
+            var calibrationValue = new StringBuilder();
+            calibrationValue.Append(digits[0]);
+            calibrationValue.Append(digits[^1]);
+            
+            return Int32.Parse(calibrationValue.ToString());
+        }
+
         public int Part1()
         {
-            throw new NotImplementedException();
+            return Data.Sum(GetCalibrationValue);
         }
 
         public int Part2()

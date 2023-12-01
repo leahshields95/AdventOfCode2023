@@ -1,4 +1,4 @@
-using System;
+using AdventOfCode2023.Helpers;
 
 namespace AdventOfCode2023.Day1
 {
@@ -6,7 +6,7 @@ namespace AdventOfCode2023.Day1
     {
         static void Main(string[] args)
         {
-            Day1 day1 = new Day1("C:/Users/leahs/Projects/AdventOfCode2023/AdventOfCode2023/Input/day1_example.txt");
+            Day1 day1 = new Day1(Constants.BasePath + "day1_example.txt");
         }
     }
 }
