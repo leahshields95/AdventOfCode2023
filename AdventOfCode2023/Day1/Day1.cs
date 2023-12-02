@@ -4,9 +4,9 @@ using AdventOfCode2023.Helpers;
 
 namespace AdventOfCode2023.Day1
 {
-    public class Day1 : Challenge
+    public class Day1 : IChallenge
     {
-        private List<string> Data = new();
+        private List<string> _data = new();
 
         public Day1(String input)
         {
@@ -16,7 +16,7 @@ namespace AdventOfCode2023.Day1
                 String line;
                 while ((line = streamReader.ReadLine()) != null)
                 {
-                    Data.Add(line);
+                    _data.Add(line);
                 }
             }
         }
@@ -68,12 +68,12 @@ namespace AdventOfCode2023.Day1
 
         public int Part1()
         {
-            return Data.Sum(d => GetCalibrationValue(d));
+            return _data.Sum(d => GetCalibrationValue(d));
         }
 
         public int Part2()
         {
-            return Data.Sum(d => GetCalibrationValue(d, true));
+            return _data.Sum(d => GetCalibrationValue(d, true));
         }
     }
 }
