@@ -26,15 +26,18 @@ namespace AdventOfCode2023.Day2
         {
             foreach (var draw in game.Draws)
             {
-                if (draw.GreenCubes > MaxPossible.GreenCubes || draw.RedCubes > MaxPossible.RedCubes ||
-                    draw.BlueCubes > MaxPossible.BlueCubes)
+                foreach (var drawnCubes in draw.AllCubesDrawn)
                 {
-                    Console.WriteLine("Game " + game.Id + " not possible");
-                    return false;
+                    foreach (var maxPossibleCubes in MaxPossible.AllCubesDrawn)
+                    {
+                        if (drawnCubes.Colour == maxPossibleCubes.Colour && drawnCubes.Count > maxPossibleCubes.Count)
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
 
-            Console.WriteLine("Game " + game.Id + " possible");
             return true;
         }
 
@@ -70,20 +73,23 @@ namespace AdventOfCode2023.Day2
             return Int32.Parse(match.Groups[1].ToString());
         }
 
-        public int GetCountOfColour(String colour, String drawString)
+        public ColouredCubes GetCountOfColour(Colour colour, String drawString)
         {
             var colourCountRegex = @"(\d*)\s" + colour;
             var match = Regex.Matches(drawString, colourCountRegex, RegexOptions.IgnoreCase).SingleOrDefault();
-            return match != null ? Int32.Parse(match.Groups[1].ToString()) : 0;
+            var cubeCount = match != null ? Int32.Parse(match.Groups[1].ToString()) : 0;
+            return new ColouredCubes(colour, cubeCount);
         }
 
         public Draw GetDrawFromDrawString(String drawString)
         {
-            int redCount = GetCountOfColour("red", drawString);
-            int greenCount = GetCountOfColour("green", drawString);
-            int blueCount = GetCountOfColour("blue", drawString);
+            List<ColouredCubes> drawnCubes = new();
+            foreach (Colour colour in Enum.GetValues(typeof(Colour)))
+            {
+                drawnCubes.Add(GetCountOfColour(colour, drawString));
+            }
 
-            return new Draw(redCount, greenCount, blueCount);
+            return new Draw(drawnCubes.ToArray());
         }
 
         public Draw[] GetDrawsFromGameString(String line)
@@ -108,11 +114,13 @@ namespace AdventOfCode2023.Day2
 
         public int GetPowerOfCubesInGame(Game game)
         {
-            int minimumReds = GetMaximumRedsInGame(game);
-            int minimumGreens = GetMaximumGreensInGame(game);
-            int minimumBlues = GetMaximumBluesInGame(game);
+            var total = 1;
+            foreach (Colour colour in ColourHelper.GetAllColours())
+            {
+                total *= GetMaximumColourInGame(colour, game);
+            }
 
-            return minimumReds * minimumGreens * minimumBlues;
+            return total;
         }
 
         public int GetMaximum(params int[] numbersOfColourDrawn)
@@ -120,37 +128,15 @@ namespace AdventOfCode2023.Day2
             return numbersOfColourDrawn.Max();
         }
 
-        private int GetMaximumRedsInGame(Game game)
+        private int GetMaximumColourInGame(Colour colour, Game game)
         {
-            List<int> numberOfRedsDrawn = new();
+            List<int> numberOfColourDrawn = new();
             foreach (var draw in game.Draws)
             {
-                numberOfRedsDrawn.Add(draw.RedCubes);
+                numberOfColourDrawn.Add(draw.GetNumberCubesOfColour(colour));
             }
 
-            return GetMaximum(numberOfRedsDrawn.ToArray());
-        }
-
-        private int GetMaximumGreensInGame(Game game)
-        {
-            List<int> numberOfGreensDrawn = new();
-            foreach (var draw in game.Draws)
-            {
-                numberOfGreensDrawn.Add(draw.GreenCubes);
-            }
-
-            return GetMaximum(numberOfGreensDrawn.ToArray());
-        }
-
-        private int GetMaximumBluesInGame(Game game)
-        {
-            List<int> numberOBluesDrawn = new();
-            foreach (var draw in game.Draws)
-            {
-                numberOBluesDrawn.Add(draw.BlueCubes);
-            }
-
-            return GetMaximum(numberOBluesDrawn.ToArray());
+            return GetMaximum(numberOfColourDrawn.ToArray());
         }
     }
 }

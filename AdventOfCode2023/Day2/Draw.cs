@@ -1,8 +1,23 @@
 namespace AdventOfCode2023.Day2;
 
-public class Draw(int redCubes, int greenCubes, int blueCubes)
+/*
+ * A collection of cubes that the elf has drawn. Red, green and blue
+ */
+public class Draw(ColouredCubes[] colouredCubes)
 {
-    public readonly int RedCubes = redCubes;
-    public readonly int GreenCubes = greenCubes;
-    public readonly int BlueCubes = blueCubes;
+    public readonly ColouredCubes[] AllCubesDrawn = colouredCubes;
+
+    public int GetNumberCubesOfColour(Colour colour)
+    {
+        int totalNumber = 0;
+        foreach (var colouredCubes in AllCubesDrawn)
+        {
+            if (colouredCubes.Colour == colour)
+            {
+                totalNumber += colouredCubes.Count;
+            }
+        }
+
+        return totalNumber;
+    }
 }
