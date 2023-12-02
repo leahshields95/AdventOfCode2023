@@ -11,15 +11,7 @@ namespace AdventOfCode2023.Day2
 
         public Day2(String input)
         {
-            using (var fileStream = File.OpenRead(input))
-            using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true))
-            {
-                String line;
-                while ((line = streamReader.ReadLine()) != null)
-                {
-                    _games.Add(ReadGameFromString(line));
-                }
-            }
+            FileHelper.ReadFromInputFile(input, (line) => _games.Add(ReadGameFromString(line)));
         }
 
         public bool IsGamePossible(Game game)

@@ -10,15 +10,7 @@ namespace AdventOfCode2023.Day1
 
         public Day1(String input)
         {
-            using (var fileStream = File.OpenRead(input))
-            using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true))
-            {
-                String line;
-                while ((line = streamReader.ReadLine()) != null)
-                {
-                    _data.Add(line);
-                }
-            }
+            FileHelper.ReadFromInputFile(input, (line) => _data.Add(line));
         }
 
         public int ConvertStringToDigit(String writtenNumber)
