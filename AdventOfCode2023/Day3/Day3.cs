@@ -32,13 +32,14 @@ namespace AdventOfCode2023.Day3
                     return GetNumberFromCharsFromStart(i + 1, line);
                 }
             }
+
             return GetNumberFromCharsFromStart(0, line);
         }
 
-        public string GetNumberFromCharsFromStart(int index, char[] line)
+        private string GetNumberFromCharsFromStart(int index, char[] line)
         {
             var number = line[index].ToString();
-            
+
             for (int i = index + 1; i < line.Length; i++)
             {
                 if (char.IsNumber(line[i]))
@@ -93,14 +94,15 @@ namespace AdventOfCode2023.Day3
             for (int i = 0; i < _data.Count; i++)
             {
                 var line = _data[i];
-                // line.Contains('*')
-
-                for (int j = 0; j < line.Length; j++)
+                if (line.Contains('*'))
                 {
-                    var digit = line[j];
-                    if (digit.Equals('*'))
+                    for (int j = 0; j < line.Length; j++)
                     {
-                        gearRatios.Add(GetGearRatio(j, i));
+                        var digit = line[j];
+                        if (digit.Equals('*'))
+                        {
+                            gearRatios.Add(GetGearRatio(j, i));
+                        }
                     }
                 }
             }
@@ -168,88 +170,38 @@ namespace AdventOfCode2023.Day3
             if (lineIndex != 0) adjacentLines.Add(_data[lineIndex - 1]);
             if (lineIndex != _data.Count - 1) adjacentLines.Add(_data[lineIndex + 1]);
 
-            if (!isStartOfLine && char.IsNumber(_data[lineIndex][charIndex - 1]))
+            if (!isStartOfLine)
             {
-                var adjacentNumberIndex = charIndex - 1;
-                var adjacentNumber = GetNumberFromChars(adjacentNumberIndex, _data[lineIndex]);
-                if (IsPartNumber(new[] { adjacentNumberIndex - adjacentNumber.Length + 1, adjacentNumberIndex },
-                        _data[lineIndex], adjacentLines.ToArray()))
-                {
-                    AddToList(adjacentPartNumbers, adjacentNumber);
-                }
+                CheckIfPartNumber(charIndex - 1, lineIndex, adjacentLines, adjacentPartNumbers);
             }
 
-            if (!isEndOfLine && char.IsNumber(_data[lineIndex][charIndex + 1]))
+            if (!isEndOfLine)
             {
-                var adjacentNumberIndex = charIndex + 1;
-                var adjacentNumber = GetNumberFromChars(adjacentNumberIndex, _data[lineIndex]);
-
-                if (IsPartNumber(new[] { adjacentNumberIndex, adjacentNumberIndex + adjacentNumber.Length - 1 },
-                        _data[lineIndex], adjacentLines.ToArray()))
-                {
-                    AddToList(adjacentPartNumbers, adjacentNumber);
-                }
+                CheckIfPartNumber(charIndex + 1, lineIndex, adjacentLines, adjacentPartNumbers, true);
             }
 
             for (int adjacentLineIndex = lineIndex - 1; adjacentLineIndex <= lineIndex + 1; adjacentLineIndex += 2)
             {
                 if (adjacentLineIndex >= 0 && adjacentLineIndex < _data.Count())
                 {
-                    var adjacentLine = _data[adjacentLineIndex];
+                    List<char[]> adjacentLineAdjacentLines = new();
+                    if (adjacentLineIndex != 0) adjacentLineAdjacentLines.Add(_data[adjacentLineIndex - 1]);
+                    if (adjacentLineIndex != _data.Count - 1)
+                        adjacentLineAdjacentLines.Add(_data[adjacentLineIndex + 1]);
 
-                    if (!isStartOfLine && char.IsNumber(adjacentLine[charIndex - 1]))
+                    if (!isStartOfLine)
                     {
-                        var adjacentNumberIndex = charIndex - 1;
-
-                        var adjacentNumber =
-                            GetNumberFromChars(adjacentNumberIndex, _data[adjacentLineIndex]);
-
-                        List<char[]> adjacentLineAdjacentLines = new();
-                        if (adjacentLineIndex != 0) adjacentLineAdjacentLines.Add(_data[adjacentLineIndex - 1]);
-                        if (adjacentLineIndex != _data.Count - 1)
-                            adjacentLineAdjacentLines.Add(_data[adjacentLineIndex + 1]);
-
-                        if (IsPartNumber(new[] { adjacentNumberIndex - adjacentNumber.Length + 1, adjacentNumberIndex },
-                                _data[adjacentLineIndex], adjacentLineAdjacentLines.ToArray()))
-                        {
-                            AddToList(adjacentPartNumbers, adjacentNumber);
-                        }
+                        CheckIfPartNumber(charIndex - 1, adjacentLineIndex, adjacentLineAdjacentLines,
+                            adjacentPartNumbers);
                     }
 
-                    if (!isEndOfLine && char.IsNumber(adjacentLine[charIndex + 1]))
+                    if (!isEndOfLine)
                     {
-                        var adjacentNumberIndex = charIndex + 1;
-                        var adjacentNumber = GetNumberFromChars(adjacentNumberIndex, _data[adjacentLineIndex]);
-
-                        List<char[]> adjacentLineAdjacentLines = new();
-                        if (adjacentLineIndex != 0) adjacentLineAdjacentLines.Add(_data[adjacentLineIndex - 1]);
-                        if (adjacentLineIndex != _data.Count - 1)
-                            adjacentLineAdjacentLines.Add(_data[adjacentLineIndex + 1]);
-
-
-                        if (IsPartNumber(new[] { adjacentNumberIndex, adjacentNumberIndex + adjacentNumber.Length - 1 },
-                                _data[adjacentLineIndex], adjacentLineAdjacentLines.ToArray()))
-                        {
-                            AddToList(adjacentPartNumbers, adjacentNumber);
-                        }
+                        CheckIfPartNumber(charIndex + 1, adjacentLineIndex, adjacentLineAdjacentLines,
+                            adjacentPartNumbers, true);
                     }
 
-                    if (char.IsNumber(adjacentLine[charIndex]))
-                    {
-                        var adjacentNumberIndex = charIndex;
-                        var adjacentNumber = GetNumberFromChars(adjacentNumberIndex, _data[adjacentLineIndex]);
-
-                        List<char[]> adjacentLineAdjacentLines = new();
-                        if (adjacentLineIndex != 0) adjacentLineAdjacentLines.Add(_data[adjacentLineIndex - 1]);
-                        if (adjacentLineIndex != _data.Count - 1)
-                            adjacentLineAdjacentLines.Add(_data[adjacentLineIndex + 1]);
-
-                        if (IsPartNumber(new[] { adjacentNumberIndex - adjacentNumber.Length, adjacentNumberIndex },
-                                _data[adjacentLineIndex], adjacentLineAdjacentLines.ToArray()))
-                        {
-                            AddToList(adjacentPartNumbers, adjacentNumber);
-                        }
-                    }
+                    CheckIfPartNumber(charIndex, adjacentLineIndex, adjacentLineAdjacentLines, adjacentPartNumbers);
                 }
             }
 
@@ -260,12 +212,38 @@ namespace AdventOfCode2023.Day3
 
             return 0;
         }
-        
+
+        private void CheckIfPartNumber(int digitIndex, int lineIndex, List<char[]> adjacentLines,
+            List<string> adjacentPartNumbers, bool isStartOfNumber = false)
+        {
+            if (char.IsNumber(_data[lineIndex][digitIndex]))
+            {
+                var adjacentNumber = GetNumberFromChars(digitIndex, _data[lineIndex]);
+                int startIndex;
+                int endIndex;
+                if (isStartOfNumber)
+                {
+                    startIndex = digitIndex;
+                    endIndex = digitIndex + adjacentNumber.Length - 1;
+                }
+                else
+                {
+                    startIndex = digitIndex - adjacentNumber.Length + 1;
+                    endIndex = digitIndex;
+                }
+
+                if (IsPartNumber(new[] { startIndex, endIndex },
+                        _data[lineIndex], adjacentLines.ToArray()))
+                {
+                    AddToList(adjacentPartNumbers, adjacentNumber);
+                }
+            }
+        }
+
         private void AddToList(List<string> list, string itemToAdd)
         {
             if (!list.Contains(itemToAdd))
             {
-                Console.WriteLine("Adding number " + itemToAdd);
                 list.Add(itemToAdd);
             }
         }
