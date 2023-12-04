@@ -60,7 +60,7 @@ public class Tests
         var input = Constants.BasePath + "day4_actual.txt";
         _day4 = new AdventOfCode2023.Day4.Day4(input);
 
-        Assert.That(_day4.Part2(), Is.EqualTo(0));
+        Assert.That(_day4.Part2(), Is.EqualTo(9997537));
     }
 
     #endregion

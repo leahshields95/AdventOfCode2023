@@ -1,11 +1,15 @@
 namespace AdventOfCode2023.Day4;
 
-public class ScratchCard(List<int> winningNumbers, List<int> chosenNumbers)
+public class ScratchCard(int id, List<int> winningNumbers, List<int> chosenNumbers)
 {
+    public int Id { get; } = id;
+
     public int GetNumberOfWinningNumbers()
     {
         return chosenNumbers.Intersect(winningNumbers).Count();
     }
+    
+    // TODO: Get winning cards method
 
     public int GetPointsScore()
     {

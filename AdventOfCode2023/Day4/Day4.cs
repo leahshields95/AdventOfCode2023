@@ -12,26 +12,33 @@ namespace AdventOfCode2023.Day4
             var regex = @"(?<=\:)(.*?)(?=\|)|(?<=\|)(.*?)(?=$)";
             var matches = Regex.Matches(line, regex, RegexOptions.IgnoreCase);
 
-            var count = 0;
+            var listCount = 0;
             List<int> winningNumbers = new();
             List<int> chosenNumbers = new();
             foreach (Match match in matches)
             {
                 List<int> numbers = GetNumbersFromString(match.ToString());
-                if (count == 0)
+                if (listCount == 0)
                 {
                     winningNumbers = numbers;
                 }
-                else if (count == 1)
+                else if (listCount == 1)
                 {
                     chosenNumbers = numbers;
                 }
 
-                count++;
+                listCount++;
             }
 
-            ScratchCard scratchCard = new ScratchCard(winningNumbers, chosenNumbers);
+            var scratchCard = new ScratchCard(GetIdFromCardString(line), winningNumbers, chosenNumbers);
             ScratchCards.Add(scratchCard);
+        }
+        
+        public int GetIdFromCardString(String line)
+        {
+            var idRegex = @"Card\s+(\d+):";
+            var match = Regex.Matches(line, idRegex, RegexOptions.IgnoreCase).Single();
+            return Int32.Parse(match.Groups[1].ToString());
         }
 
         public List<int> GetNumbersFromString(string numbers)
@@ -54,17 +61,13 @@ namespace AdventOfCode2023.Day4
 
         public int Part1()
         {
-            int total = 0;
-            foreach (var card in ScratchCards)
-            {
-                total += card.GetPointsScore();
-            }
-            return total;
+            return ScratchCards.Sum(card => card.GetPointsScore());
         }
 
         public int Part2()
         {
-            throw new NotImplementedException();
+            ScratchCards allScratchCards = new ScratchCards(ScratchCards);
+            return allScratchCards.GetTotalScratchCardsAfterWinnings();
         }
     }
 }
