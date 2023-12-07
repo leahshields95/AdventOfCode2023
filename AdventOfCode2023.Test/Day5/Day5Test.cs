@@ -27,22 +27,22 @@ public class Tests
     [Test]
     public void ShouldPopulateSeedToSoilMapWithIds()
     {
-        Assert.That(_day5.SeedToSoil[98], Is.EqualTo(50));
-        Assert.That(_day5.SeedToSoil[99], Is.EqualTo(51));
-        Assert.That(_day5.SeedToSoil[53], Is.EqualTo(55));
+        Assert.That(_day5.SeedToSoil.GetDestinationIdFromSourceId(98), Is.EqualTo(50));
+        Assert.That(_day5.SeedToSoil.GetDestinationIdFromSourceId(99), Is.EqualTo(51));
+        Assert.That(_day5.SeedToSoil.GetDestinationIdFromSourceId(53), Is.EqualTo(55));
     }
     
     [Test]
     public void NoneMappedIdsShouldBeSame()
     {
-        Assert.That(_day5.SeedToSoil[48], Is.EqualTo(48));
+        Assert.That(_day5.SeedToSoil.GetDestinationIdFromSourceId(48), Is.EqualTo(48));
     }
     
     [Test]
     public void ShouldPopulateHumidityToLocationMapWithIds()
     {
-        Assert.That(_day5.HumidityToLocation[56], Is.EqualTo(60));
-        Assert.That(_day5.HumidityToLocation[43], Is.EqualTo(43));
+        Assert.That(_day5.HumidityToLocation.GetDestinationIdFromSourceId(56), Is.EqualTo(60));
+        Assert.That(_day5.HumidityToLocation.GetDestinationIdFromSourceId(43), Is.EqualTo(43));
     }
 
     [Test]
@@ -56,8 +56,6 @@ public class Tests
     {
         var input = Constants.BasePath + "day5_actual.txt";
         _day5 = new AdventOfCode2023.Day5.Day5(input);
-
-
     }
 
     #endregion

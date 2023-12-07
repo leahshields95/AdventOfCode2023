@@ -7,14 +7,14 @@ namespace AdventOfCode2023.Day5
     public class Day5 : IChallenge
     {
         public List<int> SeedIds { get; } = new();
-        public Dictionary<int, int> SeedToSoil = new();
-        public Dictionary<int, int> SoilToFertilizer = new();
-        public Dictionary<int, int> FertilizerToWater = new();
-        public Dictionary<int, int> WaterToLight = new();
-        public Dictionary<int, int> LightToTemperature = new();
-        public Dictionary<int, int> TemperatureToHumidity = new();
-        public Dictionary<int, int> HumidityToLocation = new();
-        private Dictionary<int, int>[] mapsArray;
+        public Map SeedToSoil = new();
+        public Map SoilToFertilizer = new();
+        public Map FertilizerToWater = new();
+        public Map WaterToLight = new();
+        public Map LightToTemperature = new();
+        public Map TemperatureToHumidity = new();
+        public Map HumidityToLocation = new();
+        private Map[] mapsArray;
 
         private void GetSeedsFromLine(String line)
         {
@@ -27,7 +27,7 @@ namespace AdventOfCode2023.Day5
             }
         }
 
-        private void GetNumbersFromLine(MatchCollection matches, Dictionary<int, int> map)
+        private void GetNumbersFromLine(MatchCollection matches, Map map)
         {
             var destinationId = Int32.Parse(matches[0].ToString());
             var sourceId = Int32.Parse(matches[1].ToString());
@@ -57,15 +57,6 @@ namespace AdventOfCode2023.Day5
                 {
                     if (Regex.IsMatch(line, newMapPattern))
                     {
-                        // Add missing ids to map
-                        if (mapNumber >= 0)
-                        {
-                            for (int i = 0; i < 100; i++)
-                            {
-                                mapsArray[mapNumber].TryAdd(i, i);
-                            }
-                        }
-
                         mapNumber++;
                     }
 
@@ -74,13 +65,6 @@ namespace AdventOfCode2023.Day5
                     if (matches.Count > 0)
                     {
                         GetNumbersFromLine(matches, mapsArray[mapNumber]);
-                    }
-                }
-                if (mapNumber >= 0)
-                {
-                    for (int i = 0; i < 100; i++)
-                    {
-                        mapsArray[mapNumber].TryAdd(i, i);
                     }
                 }
             }
@@ -100,7 +84,7 @@ namespace AdventOfCode2023.Day5
                 foreach (var map in mapsArray)
                 {
                     Console.WriteLine(sourceId + " goes to ");
-                    sourceId = map.GetValueOrDefault(sourceId);
+                    sourceId = map.GetDestinationIdFromSourceId(sourceId);
                     Console.WriteLine(sourceId);
                 }
                 Console.WriteLine("Adding location " + sourceId);
