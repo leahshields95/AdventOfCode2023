@@ -67,7 +67,7 @@ public class Tests
     [Test]
     public void ShouldDoPart2()
     {
-
+        Assert.That(_day5.Part2(), Is.EqualTo(46));
     }
 
     [Test]
@@ -76,7 +76,7 @@ public class Tests
         var input = Constants.BasePath + "day5_actual.txt";
         _day5 = new AdventOfCode2023.Day5.Day5(input);
 
-
+        Assert.That(_day5.Part2(), Is.EqualTo(46));
     }
 
     #endregion

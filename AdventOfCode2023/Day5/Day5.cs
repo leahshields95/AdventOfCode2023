@@ -73,24 +73,39 @@ namespace AdventOfCode2023.Day5
 
         public long Part1()
         {
-            List<long> locationIds = new();
-            foreach (var seedId in SeedIds)
-            {
-                var sourceId = seedId;
-                foreach (var map in mapsArray)
-                {
-                    sourceId = map.GetDestinationIdFromSourceId(sourceId);
-                }
-
-                locationIds.Add(sourceId);
-            }
-
-            return locationIds.Min();
+            return GetLocationIds().Min();
         }
 
-        public int Part2()
+        public long Part2()
         {
-            return 0;
+            long minLocation = Int64.MaxValue;
+            for (int i = 0; i < SeedIds.Count; i += 2)
+            {
+                var rangeStart = SeedIds[i];
+                var rangeLength = SeedIds[i + 1];
+   
+                for (long j = rangeStart; j <= rangeStart + rangeLength; j++)
+                {
+                    long currentLocation = GetLocationIdForSeed(j);
+                    if (currentLocation < minLocation)
+                    {
+                        minLocation = currentLocation;
+                    }
+
+                }
+            }
+
+            return minLocation;
+        }
+
+        public List<long> GetLocationIds()
+        {
+            return SeedIds.Select(GetLocationIdForSeed).ToList();
+        }
+
+        private long GetLocationIdForSeed(long seedId)
+        {
+            return mapsArray.Aggregate(seedId, (current, map) => map.GetDestinationIdFromSourceId(current));
         }
     }
 }

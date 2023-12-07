@@ -15,17 +15,24 @@ public class Map
 
     public long GetDestinationIdFromSourceId(long sourceId)
     {
-        // Calculate from values
-        for (int entry = 0; entry < _sourceIds.Count; entry++)
+        // Don't bother with loops if there's no chance it's in the map
+        if (sourceId >= _sourceIds.Min() && sourceId <= _sourceIds.Max() + _numbers.Max())
         {
-            if (sourceId >= _sourceIds[entry] && sourceId <= _sourceIds[entry] + _numbers[entry])
+            // Calculate from values
+            for (int entry = 0; entry < _sourceIds.Count; entry++)
             {
-                // Is in entry, calculate destination
-                for (long i = _sourceIds[entry]; i <= _sourceIds[entry] + _numbers[entry]; i++)
+                long currentSourceId = _sourceIds[entry];
+                long currentNumber = _numbers[entry];
+
+                if (sourceId >= currentSourceId && sourceId <= currentSourceId + currentNumber)
                 {
-                    if (sourceId == i)
+                    // Is in entry, calculate destination
+                    for (long i = currentSourceId; i <= currentSourceId + currentNumber; i++)
                     {
-                        return _destinationIds[entry] + (i - _sourceIds[entry]);
+                        if (sourceId == i)
+                        {
+                            return _destinationIds[entry] + (i - currentSourceId);
+                        }
                     }
                 }
             }
