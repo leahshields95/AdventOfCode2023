@@ -56,7 +56,7 @@ namespace AdventOfCode2023.Day4
 
         public Day4(String input)
         {
-            FileHelper.ReadFromInputFile(input, AddLineToList);
+            FileHelper.ReadFromInputFileByLine(input, AddLineToList);
         }
 
         public int Part1()

@@ -16,8 +16,13 @@ public class Tests
     #region Part1
 
     [Test]
-    public void ShouldDoSomething()
+    public void ShouldAddSeedNumbersToList()
     {
+        _day5.SeedIds = new ();
+        _day5.AddSeedIds(" 1 5 12");
+        Assert.That(_day5.SeedIds[0], Is.EqualTo(1));
+        Assert.That(_day5.SeedIds[1], Is.EqualTo(5));
+        Assert.That(_day5.SeedIds[2], Is.EqualTo(12));
     }
 
     [Test]

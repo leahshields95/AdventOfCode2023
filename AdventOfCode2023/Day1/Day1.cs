@@ -10,7 +10,7 @@ namespace AdventOfCode2023.Day1
 
         public Day1(String input)
         {
-            FileHelper.ReadFromInputFile(input, (line) => _data.Add(line));
+            FileHelper.ReadFromInputFileByLine(input, (line) => _data.Add(line));
         }
 
         public int ConvertStringToDigit(String writtenNumber)

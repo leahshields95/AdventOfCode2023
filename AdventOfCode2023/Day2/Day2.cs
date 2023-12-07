@@ -11,7 +11,7 @@ namespace AdventOfCode2023.Day2
 
         public Day2(String input)
         {
-            FileHelper.ReadFromInputFile(input, (line) => _games.Add(ReadGameFromString(line)));
+            FileHelper.ReadFromInputFileByLine(input, (line) => _games.Add(ReadGameFromString(line)));
         }
 
         public bool IsGamePossible(Game game)
