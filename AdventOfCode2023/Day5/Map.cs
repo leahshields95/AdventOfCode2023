@@ -2,14 +2,14 @@ namespace AdventOfCode2023.Day5;
 
 public class Map
 {
-    public Dictionary<int, int> MappedIds = new();
+    public Dictionary<long, long> MappedIds = new();
 
-    public void Add(int sourceId, int destinationId)
+    public void Add(long sourceId, long destinationId)
     {
         MappedIds.Add(sourceId, destinationId);
     }
 
-    public int GetDestinationIdFromSourceId(int sourceId)
+    public long GetDestinationIdFromSourceId(long sourceId)
     {
         if (!MappedIds.ContainsValue(sourceId))
         {

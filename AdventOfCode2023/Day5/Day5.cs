@@ -1,12 +1,11 @@
 using System.Text;
 using System.Text.RegularExpressions;
-using AdventOfCode2023.Helpers;
 
 namespace AdventOfCode2023.Day5
 {
-    public class Day5 : IChallenge
+    public class Day5
     {
-        public List<int> SeedIds { get; } = new();
+        public List<long> SeedIds { get; } = new();
         public Map SeedToSoil = new();
         public Map SoilToFertilizer = new();
         public Map FertilizerToWater = new();
@@ -23,15 +22,15 @@ namespace AdventOfCode2023.Day5
 
             foreach (Match match in matches)
             {
-                SeedIds.Add(Int32.Parse(match.ToString()));
+                SeedIds.Add(Int64.Parse(match.ToString()));
             }
         }
 
         private void GetNumbersFromLine(MatchCollection matches, Map map)
         {
-            var destinationId = Int32.Parse(matches[0].ToString());
-            var sourceId = Int32.Parse(matches[1].ToString());
-            var numberOf = Int32.Parse(matches[2].ToString());
+            var destinationId = Int64.Parse(matches[0].ToString());
+            var sourceId = Int64.Parse(matches[1].ToString());
+            var numberOf = Int64.Parse(matches[2].ToString());
 
             for (int i = 0; i < numberOf; i++)
             {
@@ -75,19 +74,16 @@ namespace AdventOfCode2023.Day5
             ReadFromFile(input);
         }
 
-        public int Part1()
+        public long Part1()
         {
-            List<int> locationIds = new List<int>();
+            List<long> locationIds = new();
             foreach (var seedId in SeedIds)
             {
                 var sourceId = seedId;
                 foreach (var map in mapsArray)
                 {
-                    Console.WriteLine(sourceId + " goes to ");
                     sourceId = map.GetDestinationIdFromSourceId(sourceId);
-                    Console.WriteLine(sourceId);
                 }
-                Console.WriteLine("Adding location " + sourceId);
                 locationIds.Add(sourceId);
             }
 
