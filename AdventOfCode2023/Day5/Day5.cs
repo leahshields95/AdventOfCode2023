@@ -32,10 +32,7 @@ namespace AdventOfCode2023.Day5
             var sourceId = Int64.Parse(matches[1].ToString());
             var numberOf = Int64.Parse(matches[2].ToString());
 
-            for (int i = 0; i < numberOf; i++)
-            {
-                map.Add(sourceId + i, destinationId + i);
-            }
+            map.Add(sourceId, destinationId, numberOf);
         }
 
         public void ReadFromFile(String input)
@@ -84,6 +81,7 @@ namespace AdventOfCode2023.Day5
                 {
                     sourceId = map.GetDestinationIdFromSourceId(sourceId);
                 }
+
                 locationIds.Add(sourceId);
             }
 

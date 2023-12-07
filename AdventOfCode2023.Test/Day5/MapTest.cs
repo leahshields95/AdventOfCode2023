@@ -8,9 +8,10 @@ public class MapTest
     public void ShouldAddIdsToDictionary()
     {
         Map map = new Map();
-        map.Add(2,3);
+        map.Add(2,3, 2);
         
         Assert.That(map.GetDestinationIdFromSourceId(2), Is.EqualTo(3));
+        Assert.That(map.GetDestinationIdFromSourceId(4), Is.EqualTo(5));
     }
 
 }

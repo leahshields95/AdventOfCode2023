@@ -56,6 +56,8 @@ public class Tests
     {
         var input = Constants.BasePath + "day5_actual.txt";
         _day5 = new AdventOfCode2023.Day5.Day5(input);
+        
+        Assert.That(_day5.Part1(), Is.EqualTo(88151870));
     }
 
     #endregion
