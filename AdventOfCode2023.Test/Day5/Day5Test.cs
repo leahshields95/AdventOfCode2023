@@ -16,19 +16,39 @@ public class Tests
     #region Part1
 
     [Test]
-    public void ShouldAddSeedNumbersToList()
+    public void ShouldGetSeedIdsFromFile()
     {
-        _day5.SeedIds = new ();
-        _day5.AddSeedIds(" 1 5 12");
-        Assert.That(_day5.SeedIds[0], Is.EqualTo(1));
-        Assert.That(_day5.SeedIds[1], Is.EqualTo(5));
-        Assert.That(_day5.SeedIds[2], Is.EqualTo(12));
+        Assert.That(_day5.SeedIds[0], Is.EqualTo(79));
+        Assert.That(_day5.SeedIds[1], Is.EqualTo(14));
+        Assert.That(_day5.SeedIds[2], Is.EqualTo(55));
+        Assert.That(_day5.SeedIds[3], Is.EqualTo(13));
+    }
+
+    [Test]
+    public void ShouldPopulateSeedToSoilMapWithIds()
+    {
+        Assert.That(_day5.SeedToSoil[98], Is.EqualTo(50));
+        Assert.That(_day5.SeedToSoil[99], Is.EqualTo(51));
+        Assert.That(_day5.SeedToSoil[53], Is.EqualTo(55));
+    }
+    
+    [Test]
+    public void NoneMappedIdsShouldBeSame()
+    {
+        Assert.That(_day5.SeedToSoil[48], Is.EqualTo(48));
+    }
+    
+    [Test]
+    public void ShouldPopulateHumidityToLocationMapWithIds()
+    {
+        Assert.That(_day5.HumidityToLocation[56], Is.EqualTo(60));
+        Assert.That(_day5.HumidityToLocation[43], Is.EqualTo(43));
     }
 
     [Test]
     public void ShouldGetLowestLocation()
     {
-
+        Assert.That(_day5.Part1(), Is.EqualTo(35));
     }
 
     [Test]
