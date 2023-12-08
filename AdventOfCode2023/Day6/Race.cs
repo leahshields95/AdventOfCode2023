@@ -1,6 +1,6 @@
 namespace AdventOfCode2023.Day6;
 
-public class Race(int raceLength, int raceRecord)
+public class Race(long raceLength, long raceRecord)
 {
     public int GetNumberOfWaysToWin()
     {
@@ -9,8 +9,7 @@ public class Race(int raceLength, int raceRecord)
 
         for (int i = 1; i < raceLength; i++)
         {
-            boat.HoldButton(i);
-            if (boat.GetDistanceTravelled(raceLength) > raceRecord)
+            if (boat.GetDistanceTravelled(i, raceLength) > raceRecord)
             {
                 total++;
             }

@@ -5,13 +5,14 @@ public class Boat
     // mm per ms
     private int speed = 0;
 
-    public void HoldButton(int time)
+    public long GetDistanceTravelled(int buttonHeldTime, long time)
     {
-        
-    }
-
-    public int GetDistanceTravelled(int time)
-    {
-        return 0;
+        speed = 0;
+        for (int i = 0; i < buttonHeldTime; i++)
+        {
+            speed ++;
+            if (time > 0) time--;
+        }
+        return speed * time;
     }
 }

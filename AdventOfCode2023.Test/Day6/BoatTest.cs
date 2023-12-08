@@ -15,27 +15,19 @@ public class BoatTest
     [Test]
     public void BoatShouldNotMoveIfButtonNotHeld()
     {
-        boat.HoldButton(0);
-        
-        Assert.That(boat.GetDistanceTravelled(7), Is.EqualTo(0));
+        Assert.That(boat.GetDistanceTravelled(0, 7), Is.EqualTo(0));
     }
     
     [Test]
     public void BoatShouldMoveIfButtonHeld()
     {
-        boat.HoldButton(1);
-        
-        Assert.That(boat.GetDistanceTravelled(7), Is.EqualTo(6));
-        
-        boat.HoldButton(2);
-        Assert.That(boat.GetDistanceTravelled(7), Is.EqualTo(10));
+        Assert.That(boat.GetDistanceTravelled(1,7), Is.EqualTo(6));
+        Assert.That(boat.GetDistanceTravelled(2,7), Is.EqualTo(10));
     }
     
     [Test]
     public void BoatShouldNotMoveIfButtonHeldTooLong()
     {
-        boat.HoldButton(8);
-        
-        Assert.That(boat.GetDistanceTravelled(7), Is.EqualTo(0));
+        Assert.That(boat.GetDistanceTravelled(8,7), Is.EqualTo(0));
     }
 }
