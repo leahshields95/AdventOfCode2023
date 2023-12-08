@@ -2,20 +2,31 @@ namespace AdventOfCode2023.Day6;
 
 public class Race(long raceLength, long raceRecord)
 {
-    public int GetNumberOfWaysToWin()
+    public long GetNumberOfWaysToWin()
     {
         Boat boat = new Boat();
-        int total = 0;
 
-        for (int i = 1; i < raceLength; i++)
+        long min = 0;
+        long max = 0;
+
+        for (long i = 1; i < raceLength; i++)
         {
             if (boat.GetDistanceTravelled(i, raceLength) > raceRecord)
             {
-                total++;
+               min = i;
+               break;
+            }
+        }
+        for (long i = raceLength -1; i > min; i--)
+        {
+            if (boat.GetDistanceTravelled(i, raceLength) > raceRecord)
+            {
+                max = i;
+                break;
             }
         }
 
-        return total;
+        return max - min + 1;
     }
 
 }

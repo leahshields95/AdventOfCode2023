@@ -35,7 +35,7 @@ namespace AdventOfCode2023.Day6
         {
         }
 
-        public int Part1(String input)
+        public long Part1(String input)
         {
             FileHelper.ReadFromInputFileByLine(input, GetNumbersFromLine);
             for (int i = 0; i < _distanceRecords.Count; i++)
@@ -45,7 +45,7 @@ namespace AdventOfCode2023.Day6
             }
 
 
-            int total = 1;
+            long total = 1;
             foreach (var race in _races)
             {
                 total *= race.GetNumberOfWaysToWin();
@@ -77,7 +77,7 @@ namespace AdventOfCode2023.Day6
             }
         }
 
-        public int Part2(String input)
+        public long Part2(String input)
         {
             FileHelper.ReadFromInputFileByLine(input, GetNumbersAsSingleFromLine);
             Race race = new Race(_times[0], _distanceRecords[0]);
